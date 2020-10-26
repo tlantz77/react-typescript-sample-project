@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Todo, fetchTodos } from '../actions';
+import { StoreState } from '../reducers';
 
 export interface AppProps {
-  
+  todos: Todo[];
+  fetchTodos(): any;
 }
  
-class App extends Component<AppProps> {
-  state = {counter : 0 };
+class _App extends Component<AppProps> {
+  componentDidMount() {
+    this.props.fetchTodos();
+  }
+  
   render() { 
     return (
       <div>
@@ -14,5 +21,12 @@ class App extends Component<AppProps> {
     );
   }
 }
+
+const mapStateToProps = ({ todos }: StoreState): { todos: Todo[] } => {
+  return { todos };
+}
  
-export default App;
+export const App = connect(
+  mapStateToProps,
+  { fetchTodos }
+)(_App);
